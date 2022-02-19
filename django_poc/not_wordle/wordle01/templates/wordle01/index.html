@@ -1,0 +1,9 @@
+{{view_grid | safe }}
+
+<form action="{% url 'wordle01:index' %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <input type="text" name="a_word" id="a_word">
+    </fieldset>
+    <input type="submit" value="Vote">
+</form>
