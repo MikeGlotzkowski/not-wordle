@@ -1,9 +1,27 @@
 from django.http import HttpResponse
 from django.template import loader
 import pandas as pd
+import requests
+import random
 
 
-word_to_guess = list('HALLO'.lower())
+def filter_by_size(words, size):
+    return [word for word in words if len(word) == size]
+
+
+def get_random_word():
+    language = 'de' #Currently supported languages: [de, es, zh]
+    word_length = 5
+    response = requests.get(f'https://random-word-api.herokuapp.com/all/?lang={language}')
+    response.raise_for_status()
+    body = response.json()
+    word = filter_by_size (body, word_length)
+    rnd_word = random.choice(word)
+    print(f"the random word is: {rnd_word}")
+    return rnd_word
+
+
+word_to_guess = list(get_random_word().lower())
 desired_length = len(word_to_guess)
 game_grid = pd.DataFrame()
 
